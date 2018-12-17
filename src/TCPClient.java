@@ -11,14 +11,14 @@ public class TCPClient {
             String sentence;
             String modifiedSentence;
             //BufferedReader inFromUser = new BufferedReader;
-            Socket clientSocket = new Socket("localhost", 6789);
-            DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
-            BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            Socket clientSocket = new Socket("localhost", 6790);
+            //BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             System.out.println("Połączło się");
             System.out.println("Podaj Numer Indeksu Studenta");
             sentence = scanner.nextLine();
             System.out.println(sentence);
-            outToServer.writeUTF(sentence);
+            DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
+            outToServer.writeBytes(sentence+"\n");
 
 
             ObjectInputStream inputStream = new ObjectInputStream(clientSocket.getInputStream());
@@ -28,7 +28,8 @@ public class TCPClient {
             System.out.println("Jeśli chcesz dopisać ocenę wpisz T");
 
             sentence = scanner.nextLine();
-            if (sentence == "T") {
+            if (sentence.equals("T")) {
+                System.out.println("Podaj ocenę");
                 ocena = scanner.nextInt();
                 student.dodajOcene(ocena);
             }

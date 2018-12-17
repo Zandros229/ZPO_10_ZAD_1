@@ -20,17 +20,16 @@ public class TCPServer {
             String temp;
             Student student = null;
 
-
+            ServerSocket welcomeSocket = new ServerSocket(6790);
             while (true) {
-                ServerSocket welcomeSocket = new ServerSocket(6789);
+
                 Socket connectionSocket = welcomeSocket.accept();
                 System.out.println("Połączyło się");
                 BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
-                inFromClient.ready();
                 temp=inFromClient.readLine();
                 System.out.println(temp);
                 for (int i = 0; i < list.size(); i++) {
-                    if (list.get(i).numerIndeksu == temp) {
+                    if (list.get(i).numerIndeksu.equals(temp)) {
                         student = list.get(i);
                         index = i;
                         System.out.println("Znalazło obiekt");
@@ -41,6 +40,7 @@ public class TCPServer {
                 ObjectInputStream inputStream = new ObjectInputStream(connectionSocket.getInputStream());
                 list.set(index, (Student) inputStream.readObject());
                 System.out.println("Zmieniło Obiekt");
+                System.out.println(list.get(index).toString());
 
             }
         }catch (Exception e){
